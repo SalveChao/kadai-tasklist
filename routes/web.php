@@ -24,5 +24,7 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
 // ユーザ機能(ログイン認証しているユーザだけがコントローラーにアクセスできる)
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('tasks', 'TasksController');    
+    Route::resource('tasks', 'TasksController');
+    
+    Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
 });

@@ -10,7 +10,7 @@
         </ul>
     @endif
 
- <h1>id: {{ $task->id }} のメッセージ編集ページ</h1>
+ <h1>id: {{ $task->id }} の内容編集ページ</h1>
 
     <div class="row">
         <div class="col-6">
@@ -27,7 +27,7 @@
                     {!! Form::text('content', null, ['class' => 'form-control']) !!}
                 </div>
         
-                {!! Form::submit('更新', ['class' => 'btn btn-light']) !!}
+                {!! Form::submit('更新', ['class' => 'btn btn-lg btn-light']) !!}
         
             {!! Form::close() !!}
         </div>

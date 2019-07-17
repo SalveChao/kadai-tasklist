@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use Auth;
 
 class TasksController extends Controller
 {
@@ -20,6 +21,7 @@ class TasksController extends Controller
             'tasks' => $tasks,
             ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -43,12 +45,14 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {   
+        $auths = Auth::user();
         $this->validate($request, [
             'content' => 'required|max:191',
             'status' => 'required|max:10',
         ]);
         
         $task = new Task;
+        $task->user_id= Auth::id();
         $task->content = $request->content;
         $task->status = $request->status; 
         $task->save();
@@ -66,8 +70,7 @@ class TasksController extends Controller
     {
         $task = Task::find($id);
         
-        return view('tasks.show', ['task' => $task,
-        ]);
+        return view('tasks.show', ['task' => $task,]);
     }
 
     /**

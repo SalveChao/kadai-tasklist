@@ -2,15 +2,15 @@
 
 @section('content')
 
-<h1>メッセージ一覧</h1>
     @if (Auth::id())
+    <h1>タスク一覧</h1>
         @if (count($tasks) > 0)
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>Status</th>
-                        <th>メッセージ</th>
+                        <th>ステータス</th>
+                        <th>内容</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,8 +23,8 @@
                     @endforeach
                 </tbody>
             </table>
-            {!! link_to_route('tasks.create', '新規メッセージの投稿', null, ['class' => 'btn btn-primary']) !!}
         @endif
+        {!! link_to_route('tasks.create', '新規投稿', null, ['class' => 'btn btn-lg btn-primary']) !!}
     @else
         @include('welcome')
     @endif
