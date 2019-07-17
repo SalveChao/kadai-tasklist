@@ -18,7 +18,7 @@ class TasksController extends Controller
         $data = [];
         if (\Auth::check()) {
             $user = \Auth::user();
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(3);
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(5);
             
             $data = [
                 'user' => $user,
@@ -29,7 +29,6 @@ class TasksController extends Controller
             return view('tasks.index', $data);
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -37,13 +36,15 @@ class TasksController extends Controller
      */
     public function create()
     {
+        $data = [];
         if (\Auth::check()) {
+        $user = \Auth::user();    
         $task = new Task;
-        }
         
-        return view('tasks.create', [
-            'task' => $task,
-            ]);
+        $data = ['user'=>$user, 'task'=>$task];
+         }
+        
+        return view('tasks.create', $data);
     }
 
     /**
@@ -54,12 +55,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {   
-        if (\Auth::check()) {
+
         $this->validate($request, [
             'content' => 'required|max:191',
             'status' => 'required|max:10',
         ]);
         
+        if (\Auth::check()) {        
         $task = new Task;
         $task->user_id= Auth::id();
         $task->content = $request->content;
@@ -79,8 +81,13 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
+        if (\Auth::id() === $task->user_id) {
+        $user=Auth::user();
         
-        return view('tasks.show', ['task' => $task,]);
+        $data = ['task'=>$task,  'user'=>$user ];
+        }
+        
+        return view('tasks.show', $data);
     }
 
     /**
@@ -91,12 +98,14 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        if (\Auth::check()) {
         $task = Task::find($id);
+        if (\Auth::id() === $task->user_id) {
+         $user=Auth::user();
+         
+         $data = ['task'=>$task,  'user'=>$user ];
         }
         
-        return view('tasks.edit', ['task'=>$task
-        ]);
+        return view('tasks.edit', $data);
     }
 
     /**
@@ -113,8 +122,9 @@ class TasksController extends Controller
         'status' => 'required|max:10',
         ]);
         
-        if (\Auth::check()) {
         $task = Task::find($id);
+        
+        if (\Auth::id() === $task->user_id) {
         $task->content = $request->content;
         $task->status = $request->status; 
         $task->save();
